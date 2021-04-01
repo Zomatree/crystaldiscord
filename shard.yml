@@ -1,0 +1,9 @@
+name: crystaldiscord
+version: 0.1.0
+
+authors:
+  - Zomatree <angelokontaxis@hotmail.com>
+
+crystal: 0.36.1
+
+license: MIT
