@@ -1,16 +1,16 @@
 # crystaldiscord
 
-TODO: Write a description here
+a discord library written in crystal.
 
 ## Installation
 
 1. Add the dependency to your `shard.yml`:
 
-   ```yaml
-   dependencies:
-     crystaldiscord:
-       github: your-github-user/crystaldiscord
-   ```
+```yaml
+dependencies:
+  crystaldiscord:
+    github: Zomatree/crystaldiscord
+```
 
 2. Run `shards install`
 
@@ -18,13 +18,15 @@ TODO: Write a description here
 
 ```crystal
 require "crystaldiscord"
+
+client = Crystaldiscord::Client.new "token goes here"
+
+client.on_message = ->(msg : Crystaldiscord::Message) {
+    puts "#{msg.author.user.name}: #{msg.content}"
+}
+
+client.run()
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
