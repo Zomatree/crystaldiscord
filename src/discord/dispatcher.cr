@@ -1,8 +1,9 @@
 class BaseInfo end
 
-alias PROC = BaseInfo -> Nil
 
 class Crystaldiscord::Dispatcher
+    alias PROC = BaseInfo -> Nil
+
     @callbacks = {} of String => Array(PROC)
 
     def register(name : String, b : PROC)

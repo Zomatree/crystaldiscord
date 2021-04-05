@@ -17,6 +17,11 @@ class Crystaldiscord::Client
     property last_d : String | Nil
     property user : Models::BaseUser | Nil
 
+    property _on_message : Proc(Models::Message, Nil) = ->(msg : Models::Message) {}
+
+    def on_message=(@_on_message : Proc(Models::Message, Nil))
+    end
+
     def initialize(token)
         @token = "Bot #{token}"
         @dispatcher = Dispatcher.new
@@ -65,7 +70,6 @@ class Crystaldiscord::Client
 
         when 0
             event = msg["t"].as_s
-            puts event
             case event
             when "READY"
                 @user = Models::BaseUser.from_json_object msg["d"]["user"], @http
@@ -73,7 +77,9 @@ class Crystaldiscord::Client
             when "GUILD_CREATE"
                 guild = Models::Guild.from_json_object(msg["d"], @http)
                 @unready_guilds.delete(guild.id)
-
+            when "MESSAGE_CREATE"
+                message = Models::Message.from_json_object(msg["d"], @http)
+                self._on_message.call message
             end
         end
     end
@@ -95,7 +101,4 @@ class Crystaldiscord::Client
         ws.run
     end
 
-    def event(name : String, &block : PROC)
-        @dispatcher.register name, block
-    end
 end

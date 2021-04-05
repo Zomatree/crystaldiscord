@@ -1,5 +1,7 @@
 require "./discord/*"
+require "./discord/models"
 
 module Crystaldiscord
-  VERSION = "0.1.0"
+    include Models
+    VERSION = "0.1.0"
 end

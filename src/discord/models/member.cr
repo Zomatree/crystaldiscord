@@ -1,10 +1,7 @@
 require "time"
 require "json"
-require "../http"
-require "../models"
 require "../../crystaldiscord"
-require "time"
-
+require "./user"
 class Models::Member
     @http : Crystaldiscord::HTTPClient
     property user : Models::BaseUser
@@ -36,6 +33,6 @@ class Models::Member
             permissions = permissions.as_s
         end
 
-        return Models::Member.new http, user, nick, roles, joined_at, premium_since, deaf, mute, pending, permissions
+        return Member.new http, user, nick, roles, joined_at, premium_since, deaf, mute, pending, permissions
     end
 end

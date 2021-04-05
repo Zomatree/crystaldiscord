@@ -1,5 +1,5 @@
 require "./models/*"
 require "../crystaldiscord"
 
-module Crystaldiscord::Modeles
+module Models
 end
