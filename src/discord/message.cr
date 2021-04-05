@@ -1,14 +1,14 @@
-require "../../crystaldiscord"
+require "../crystaldiscord"
 require "json"
 require "./member"
 require "time"
 
-class Models::Message
+class Crystaldiscord::Message
     @http : Crystaldiscord::HTTPClient
     property id : String
     property channel_id : String
     property guild_id : String
-    property author : Models::Member
+    property author : Crystaldiscord::Member
     property content : String
 
     def initialize(@http, @id, @channel_id, @guild_id, @author, @content)
@@ -22,7 +22,7 @@ class Models::Message
         member = data["member"].as_h
         member["user"] = data["author"]
 
-        user = Models::User.from_json_object(member["user"], http)
+        user = Crystaldiscord::User.from_json_object(member["user"], http)
         nick = member["nick"]?.try &.as_s?
         roles = member["roles"].as_a.map do |role| role.as_s end
         joined_at = Time::Format::ISO_8601_DATE_TIME.parse member["joined_at"].as_s
@@ -37,10 +37,10 @@ class Models::Message
             permissions = permissions.as_s
         end
 
-        author = Member.new http, user, nick, roles, joined_at, premium_since, deaf, mute, pending, permissions
+        author = Crystaldiscord::Member.new http, user, nick, roles, joined_at, premium_since, deaf, mute, pending, permissions
 
         content = data["content"].as_s
 
-        return Message.new http, id, channel_id, guild_id, author, content
+        return Crystaldiscord::Message.new http, id, channel_id, guild_id, author, content
     end
 end

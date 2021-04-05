@@ -1,8 +1,8 @@
 require "json"
-require "../http"
-require "../../crystaldiscord"
+require "./http"
+require "../crystaldiscord"
 
-class Models::RoleTag
+class Crystaldiscord::RoleTag
     property bot_id : String?
     property intergration_id : String?
     property premium_subscriber : Bool
@@ -26,11 +26,11 @@ class Models::RoleTag
             premium_subscriber = false
         end
 
-        return RoleTag.new bot_id, intergration_id, premium_subscriber
+        return Crystaldiscord::RoleTag.new bot_id, intergration_id, premium_subscriber
     end
 end
 
-class Models::Role
+class Crystaldiscord::Role
     @http : Crystaldiscord::HTTPClient
     @id : String
     @name : String
@@ -40,7 +40,7 @@ class Models::Role
     @permissions : Int32
     @managed : Bool
     @mentionable : Bool
-    @tags : Array(Models::RoleTag)
+    @tags : Array(Crystaldiscord::RoleTag)
 
     def initialize(@http, @id, @name, @color, @hoist, @position, @permissions, @managed, @mentionable, @tags)
     end
@@ -58,9 +58,9 @@ class Models::Role
         if !tags.is_a?(Array)
             tags = [] of JSON::Any
         end
-        tags = tags.map do |role| Models::RoleTag.from_json_object(role) end
+        tags = tags.map do |role| Crystaldiscord::RoleTag.from_json_object(role) end
         
-        return Role.new http, id, name, color, hoist, position, permissions, managed, mentionable, tags
+        return Crystaldiscord::Role.new http, id, name, color, hoist, position, permissions, managed, mentionable, tags
     end
 
 end

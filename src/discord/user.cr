@@ -1,8 +1,8 @@
 require "json"
-require "../http"
-require "../../crystaldiscord"
+require "./http"
+require "../crystaldiscord"
 
-class Models::BaseUser
+class Crystaldiscord::BaseUser
     @http : Crystaldiscord::HTTPClient
     property id : String
     property name : String
@@ -34,12 +34,12 @@ class Models::BaseUser
             public_flags = public_flags.as_i64
         else public_flags = 0_i64 end
         
-        return Models::BaseUser.new http, id, name, discriminator, bot, avatar, system, public_flags
+        return Crystaldiscord::BaseUser.new http, id, name, discriminator, bot, avatar, system, public_flags
     end
 end
 
 
-class Models::User < Models::BaseUser
+class Crystaldiscord::User < Crystaldiscord::BaseUser
     def BaseUser.from_json_object(data : JSON::Any, http : Crystaldiscord::HTTPClient)
         id = data["id"].as_s
         name = data["username"].as_s
@@ -59,6 +59,6 @@ class Models::User < Models::BaseUser
             public_flags = public_flags.as_i64
         else public_flags = 0_i64 end
         
-        return Models::User.new http, id, name, discriminator, bot, avatar, system, public_flags
+        return Crystaldiscord::User.new http, id, name, discriminator, bot, avatar, system, public_flags
     end
 end

@@ -1,5 +1,4 @@
 require "./http"
-require "./models"
 require "http"
 require "json"
 require "fiber"
@@ -9,15 +8,15 @@ class Crystaldiscord::Client
     property token : String
     property ws : HTTP::WebSocket | Nil
     property http : HTTPClient
-    property guild_cache = {} of String => Models::Guild
+    property guild_cache = {} of String => Crystaldiscord::Guild
     property unready_guilds : Set(String) = Set.new [] of String
     property session_id = ""
     property last_d : String | Nil
-    property user : Models::BaseUser | Nil
+    property user : Crystaldiscord::BaseUser | Nil
 
-    property _on_message : Proc(Models::Message, Nil) = ->(msg : Models::Message) {}
+    property _on_message : Proc(Crystaldiscord::Message, Nil) = ->(msg : Crystaldiscord::Message) {}
 
-    def on_message=(@_on_message : Proc(Models::Message, Nil))
+    def on_message=(@_on_message : Proc(Crystaldiscord::Message, Nil))
     end
 
     def initialize(token)
@@ -69,13 +68,13 @@ class Crystaldiscord::Client
             event = msg["t"].as_s
             case event
             when "READY"
-                @user = Models::BaseUser.from_json_object msg["d"]["user"], @http
+                @user = Crystaldiscord::BaseUser.from_json_object msg["d"]["user"], @http
                 @unready_guilds = Set.new(msg["d"]["guilds"].as_a.map do |guild| guild["id"].as_s end)
             when "GUILD_CREATE"
-                guild = Models::Guild.from_json_object(msg["d"], @http)
+                guild = Crystaldiscord::Guild.from_json_object(msg["d"], @http)
                 @unready_guilds.delete(guild.id)
             when "MESSAGE_CREATE"
-                message = Models::Message.from_json_object(msg["d"], @http)
+                message = Crystaldiscord::Message.from_json_object(msg["d"], @http)
                 self._on_message.call message
             end
         end
