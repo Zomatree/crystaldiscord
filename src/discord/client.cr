@@ -1,4 +1,3 @@
-require "./dispatcher"
 require "./http"
 require "./models"
 require "http"
@@ -8,7 +7,6 @@ require "fiber"
 
 class Crystaldiscord::Client
     property token : String
-    property dispatcher : Dispatcher
     property ws : HTTP::WebSocket | Nil
     property http : HTTPClient
     property guild_cache = {} of String => Models::Guild
@@ -24,7 +22,6 @@ class Crystaldiscord::Client
 
     def initialize(token)
         @token = "Bot #{token}"
-        @dispatcher = Dispatcher.new
         @http = HTTPClient.new @token
         @user = nil
         @last_d = nil
