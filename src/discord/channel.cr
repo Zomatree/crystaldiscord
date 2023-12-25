@@ -12,7 +12,7 @@ class Crystaldiscord::Channel
   property nsfw : Bool
   property members : Array(Crystaldiscord::Member)
 
-  def initialize(@http, @id, @name, @topic, @guild_id, @members)
+  def initialize(@http, @id, @name, @type, @topic, @guild_id, @nsfw, @members)
   end
 
   def Channel.from_json_object(data : JSON::Any, http : Crystaldiscord::HTTPClient)
